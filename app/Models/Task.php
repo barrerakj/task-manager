@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'name',
+        'title',
         'content',
         'is_completed',
         'due_date',
         'category_id',
-        'user_id',
     ];
 
     public function category()
@@ -20,8 +19,8 @@ class Task extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function user()
+    public function tags()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Tag::class);
     }
 }
