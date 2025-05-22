@@ -13,7 +13,6 @@ const props = defineProps({
         type: Array,
         required: true,
         default: () => []
-        // Example: [{ key: 'name', label: 'Name' }, { key: 'email', label: 'Email' }]
     },
     // Whether to show actions column
     hasActions: {
@@ -21,6 +20,13 @@ const props = defineProps({
         default: true
     }
 });
+
+// Helper function to get nested object value
+const getNestedValue = (obj, path) => {
+    return path.split('.').reduce((current, key) => 
+        current ? current[key] : undefined, obj
+    );
+};
 
 // Define emits
 defineEmits(['edit', 'delete']);
@@ -52,8 +58,8 @@ defineEmits(['edit', 'delete']);
                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                     >
                         <!-- Custom cell slot if provided -->
-                        <slot :name="column.key" :item="item" :value="item[column.key]">
-                            {{ item[column.key] }}
+                        <slot :name="column.key" :item="item" :value="getNestedValue(item, column.key)">
+                            {{ getNestedValue(item, column.key) }}
                         </slot>
                     </td>
                     <!-- Actions column -->

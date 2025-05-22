@@ -2,12 +2,17 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import TasksTable from '@/Pages/Task/TasksTable.vue';
 import { useTasks } from '@/stores/tasks';
+import { useCategories } from '@/stores/categories';
 import { onMounted } from 'vue';
 
 const taskStore = useTasks();
+const categoryStore = useCategories();
 
-onMounted(() => {
-    taskStore.fetchTasks();
+onMounted(async () => {
+    await Promise.all([
+        taskStore.fetchTasks(),
+        categoryStore.fetchCategories()
+    ]);
 });
 </script>
 

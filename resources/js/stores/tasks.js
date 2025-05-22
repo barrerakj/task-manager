@@ -9,8 +9,7 @@ export const useTasks = defineStore('tasks', () => {
     const fetchTasks = async () => {
         try {
             const response = await axios.get('/api/tasks')
-            console.log('Response:', response.data)
-            tasks.value = response.data.data
+            tasks.value = response.data
         } catch (error) {
             console.error('Error fetching tasks:', error)
         }

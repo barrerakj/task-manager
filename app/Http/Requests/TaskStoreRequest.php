@@ -16,6 +16,7 @@ class TaskStoreRequest extends FormRequest
             'category_id' => 'nullable|integer|exists:categories,id',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
+            'user_id' => 'required|integer|exists:users,id',
         ];
     }
 }

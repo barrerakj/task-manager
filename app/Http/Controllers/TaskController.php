@@ -16,11 +16,10 @@ class TaskController extends Controller
     public function index()
     {
         try {
-            //$tasks = Task::with(['tags', 'category'])->get();
-            $tasks = Task::all();
+            $tasks = Task::with(['category'])->get();
             return response()->json($tasks);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch tasks', 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Failed to fetch tasks'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -33,14 +32,12 @@ class TaskController extends Controller
 
         try {
             $task = Task::create($validData);
-            if (!empty($tags)) {
-                foreach ($tags as $tagId) {
-                    TaskTag::create([
-                        'task_id' => $task->id,
-                        'tag_id' => $tagId
-                    ]);
-                }
+            
+            // Attach tags if they are present in the validated data
+            if (isset($validData['tags'])) {
+                $task->tags()->sync($validData['tags']);
             }
+            
             return response()->json($task);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create task'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -57,12 +54,16 @@ class TaskController extends Controller
         try {
             DB::beginTransaction();
             $task->update($validData);
-            $task->tags()->sync($validData['tags']);
+            
+            if (isset($validData['tags'])) {
+                $task->tags()->sync($validData['tags']);
+            }
+            
             DB::commit();
             return response()->json($task);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Failed to update task'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Failed to update task', 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

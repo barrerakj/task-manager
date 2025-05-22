@@ -15,6 +15,11 @@ class Task extends Model
         'is_completed',
         'due_date',
         'category_id',
+        'user_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'date:Y-m-d',
     ];
 
     public function category()
