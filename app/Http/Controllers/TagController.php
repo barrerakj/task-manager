@@ -16,7 +16,7 @@ class TagController extends Controller
     {
         try {
             $tags = Tag::all();
-            return response()->json(['data' => $tags, Response::HTTP_OK]);
+            return response()->json(['data' => $tags]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch tags'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -31,7 +31,7 @@ class TagController extends Controller
 
         try {
             $tag = Tag::create($validData);
-            return response()->json(['data' => $tag, Response::HTTP_CREATED]);
+            return response()->json(['data' => $tag]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create tag'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -48,7 +48,7 @@ class TagController extends Controller
             DB::beginTransaction();
             $tag->update($validData);
             DB::commit();
-            return response()->json(['data' => $tag, Response::HTTP_OK]);
+            return response()->json(['data' => $tag]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to update tag'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -64,7 +64,7 @@ class TagController extends Controller
             DB::beginTransaction();
             $tag->delete();
             DB::commit();
-            return response()->json(['data' => 'Tag deleted successfully'], Response::HTTP_OK);
+            return response()->json(['data' => 'Tag deleted successfully']);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to delete tag'], Response::HTTP_INTERNAL_SERVER_ERROR);

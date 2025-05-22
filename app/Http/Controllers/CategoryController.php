@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         try {
             $categories = Category::all();
-            return response()->json(['data' => $categories, Response::HTTP_OK]);
+            return response()->json(['data' => $categories]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch categories'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -31,7 +31,7 @@ class CategoryController extends Controller
 
         try {
             $category = Category::create($validData);
-            return response()->json(['data' => $category, Response::HTTP_CREATED]);
+            return response()->json(['data' => $category]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create the category'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -48,7 +48,7 @@ class CategoryController extends Controller
             DB::beginTransaction();
             $category->update($validData);
             DB::commit();
-            return response()->json(['data' => $category, Response::HTTP_OK]);
+            return response()->json(['data' => $category]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to update category'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -64,7 +64,7 @@ class CategoryController extends Controller
             DB::beginTransaction();
             $category->delete();
             DB::commit();
-            return response()->json(['data' => 'Category deleted successfully'], Response::HTTP_OK);
+            return response()->json(['data' => 'Category deleted successfully']);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to delete category'], Response::HTTP_INTERNAL_SERVER_ERROR);
