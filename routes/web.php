@@ -21,4 +21,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('/categories', function () {
+        return Inertia::render('Categories');
+    })->name('categories');
+    Route::get('/tags', function () {
+        return Inertia::render('Tags');
+    })->name('tags');
 });
