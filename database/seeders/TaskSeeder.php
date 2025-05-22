@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Task;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class TaskSeeder extends Seeder
 {
@@ -12,25 +14,25 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Task::factory(10)->create([
-            'user_id' => 1,
-            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-        ]);
-        \App\Models\Task::factory(10)->create([
-            'user_id' => 2,
-            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-        ]);
-        \App\Models\Task::factory(10)->create([
-            'user_id' => 3,
-            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-        ]);
-        \App\Models\Task::factory(10)->create([
-            'user_id' => 4,
-            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-        ]);
-        \App\Models\Task::factory(10)->create([
-            'user_id' => 5,
-            'category_id' => \App\Models\Category::inRandomOrder()->first()->id,
-        ]);
+        $sampleTasks = [
+            'Complete Project Proposal',
+            'Review Code Changes',
+            'Update Documentation',
+            'Client Meeting',
+            'Team Standup'
+        ];
+
+        foreach (range(1, 5) as $userId) {
+            foreach ($sampleTasks as $taskTitle) {
+                Task::create([
+                    'title' => $taskTitle,
+                    'content' => 'This is a sample task description for ' . $taskTitle,
+                    'is_completed' => false,
+                    'due_date' => now()->addDays(rand(1, 30)),
+                    'user_id' => $userId,
+                    'category_id' => Category::inRandomOrder()->first()->id,
+                ]);
+            }
+        }
     }
 }

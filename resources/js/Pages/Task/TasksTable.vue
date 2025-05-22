@@ -1,15 +1,23 @@
 <script setup>
     import Table from '@/Components/Table.vue';
+    import { onMounted } from 'vue';
 
-    const users = [
-        { id: 1, name: 'John Doe', email: 'john@example.com', status: 'active' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'inactive' },
-    ];
+    const props = defineProps({
+        tasks: {
+            type: Array,
+            required: true
+        }
+    });
+
+    console.log('Tasks:', props.tasks);
 
     const columns = [
-        { key: 'name', label: 'Name' },
-        { key: 'email', label: 'Email' },
-        { key: 'status', label: 'Status' },
+        { key: 'id', label: 'ID' },
+        { key: 'title', label: 'Title' },
+        { key: 'content', label: 'Content' },
+        { key: 'is_completed', label: 'Status' },
+        { key: 'created_at', label: 'Created' },
+        { key: 'due_date', label: 'Due Date' },
     ];
 
     const handleEdit = (item) => {
@@ -23,7 +31,7 @@
 
 <template>
     <Table 
-        :items="users" 
+        :items="props.tasks" 
         :columns="columns"
         @edit="handleEdit"
         @delete="handleDelete"

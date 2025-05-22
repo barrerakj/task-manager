@@ -16,10 +16,11 @@ class TaskController extends Controller
     public function index()
     {
         try {
-            $tasks = Task::with(['tags', 'category'])->get();
-            return response()->json(['data' => $tasks]);
+            //$tasks = Task::with(['tags', 'category'])->get();
+            $tasks = Task::all();
+            return response()->json($tasks);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch tasks'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Failed to fetch tasks', 'message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -40,7 +41,7 @@ class TaskController extends Controller
                     ]);
                 }
             }
-            return response()->json(['data' => $task]);
+            return response()->json($task);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create task'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -58,7 +59,7 @@ class TaskController extends Controller
             $task->update($validData);
             $task->tags()->sync($validData['tags']);
             DB::commit();
-            return response()->json(['data' => $task]);
+            return response()->json($task);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to update task'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -74,7 +75,7 @@ class TaskController extends Controller
             DB::beginTransaction();
             $task->delete();
             DB::commit();
-            return response()->json(['data' => 'Task deleted successfully']);
+            return response()->json('Task deleted successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Failed to delete task'], Response::HTTP_INTERNAL_SERVER_ERROR);
